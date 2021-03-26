@@ -12,10 +12,7 @@ pytesseract.pytesseract.tesseract_cmd = r"C:\Program Files\Tesseract-OCR\tessera
 
 
 # To create a proper path for creation of temporary directory named 'imgs' which gets deleted later
-location = "C:/Users/ojasp/PycharmProjects/pdf2audiobook"
-directory = "imgs"
-path = os.path.join(location, directory)
-
+path = "imgs"
 
 # Start pyttsx3 engine with rate of 185wpm.
 engine = pyttsx3.init()
@@ -24,7 +21,7 @@ engine.setProperty('rate', 185)
 
 # Fetch PDF
 pdfname = str(input("Enter name of PDF: "))
-padfpath = "C:\\Users\\ojasp\\PycharmProjects\\pdf2audiobook\\{}.pdf".format(pdfname)
+padfpath = "{}.pdf".format(pdfname)
 
 
 # Convert PDF pages to images
