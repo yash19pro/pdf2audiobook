@@ -15,6 +15,8 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from django.conf import settings
+from django.conf.urls.static import static
 
 from convert.views import landing_page, contact_us, book_upload
 
@@ -23,6 +25,7 @@ urlpatterns = [
     path('', landing_page, name = 'landing-page'),
     path('contact_us/', contact_us, name = 'contact-us-page'),
     path('book-upload/', book_upload, name = 'book-upload'),
-
-
 ]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
