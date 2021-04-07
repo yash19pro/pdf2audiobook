@@ -1,45 +1,62 @@
-import threading
+# importing the necessary libraries
 import pytesseract
+import threading
 import cv2
 import pyttsx3
-import time
-
-pytesseract.pytesseract.tesseract_cmd = r"C:\Program Files\Tesseract-OCR\tesseract.exe"
-engine = pyttsx3.init()
-engine.setProperty('rate', 185)
+import os
+import re
 
 text = str()
+
 
 def next_img(name):
     global text
     print("Thread execution started")
     img = cv2.imread(name)
-    # time.sleep(5)
-    text = pytesseract.image_to_string(img)
+    gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+    ret, img_threshold = cv2.threshold(gray, 170, 255, cv2.THRESH_BINARY)
+    text = pytesseract.image_to_string(img_threshold)
+    text = re.sub(r"\b\n", " ", text)
+    text = re.sub(r"\n\b", " ", text)
+    text = re.sub(r"-\s", "", text)
     print("Thread execution ended")
 
 
+class Image2audio:
+    def __init__(self, name, speechrate, start, end):
+        self.speechrate = speechrate
+        self.text = str()
+        self.start = start
+        self.end = end
+        self.pdfpath = os.path.dirname(__file__)
+        self.pdfname = name
 
-_ = 2
-img_name = "edi{}.jpeg".format(_)
-img = cv2.imread(img_name)
-text = pytesseract.image_to_string(img)
-for i in range(2, 5):
-    # img_name = "edi{}.jpeg".format(_)
-    # img = cv2.imread(img_name)
-    # text = pytesseract.image_to_string(img)
-    try:
-        t = threading.Thread(target=next_img, args=("edi{}.jpeg".format(_+1),))
-        _ += 1
-        t.start()
-    except FileNotFoundError:
-        print("i+1 error")
-    engine.say(text)
-    engine.runAndWait()
-    try:
-        t.join()
-    except:
-        print("t doesn't exist")
-    if _ > 4:
-        engine.say("Thank You!\nThis states that I am working perfectly fine as a parallel processing system.")
-        engine.runAndWait()
+        # Initializing TTS engine
+        self.engine = pyttsx3.init()
+        self.engine.setProperty('rate', self.speechrate)
+
+    def converter(self):
+        global text
+        img = cv2.imread("{}/pdf2audiobook/media/{}/page{}.jpg".format(self.pdfpath, self.pdfname, 0))
+        gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+        ret, img_threshold = cv2.threshold(gray, 170, 255, cv2.THRESH_BINARY)
+        text = pytesseract.image_to_string(img_threshold)
+        text = re.sub(r"\b\n", " ", text)
+        text = re.sub(r"\n\b", " ", text)
+        text = re.sub(r"-\s", "", text)
+
+        # scanning the images and extracting the text from the image
+        for i in range(self.start + 1, self.end + 1):
+            b = "{}/pdf2audiobook/media/{}/page{}.jpg".format(self.pdfpath, self.pdfname, str(i + 1 - self.start))
+            t = threading.Thread(target=next_img, args=(b,))
+            print(b)
+            t.start()
+            self.engine.say("page " + str(i - self.start) + ' started!')
+            self.engine.runAndWait()
+            self.engine.say(text)
+            self.engine.runAndWait()
+            print('page ' + str(i - self.start) + ' done')
+            t.join()
+
+a = Image2audio("IGA", 500, 0, 2)
+a.converter()

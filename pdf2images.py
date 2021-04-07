@@ -21,3 +21,5 @@ class Pdf2images:
             pages[i].save('{}/pdf2audiobook/media/{}/page{}.jpg'.format(self.pdfpath, self.pdfname, i), 'JPEG')
             print('Page ' + str(i - self.start) + " done...")
 
+a = Pdf2images("IAG", 0, 0)
+a.converter()
