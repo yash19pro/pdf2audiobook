@@ -16,11 +16,13 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
-from convert.views import landing_page, contact_us
+from convert.views import landing_page, contact_us, book_upload
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', landing_page, name = 'landing-page'),
-    path('contact_us/', contact_us, name = 'contact-us-page')
+    path('contact_us/', contact_us, name = 'contact-us-page'),
+    path('upload/', book_upload, name = 'book-upload'),
+
 
 ]

@@ -6,3 +6,6 @@ def landing_page(request):
 
 def contact_us(request):
     return render(request, 'contact_us.html')
+
+def book_upload(request):
+    return render(request, 'book_upload.html')
