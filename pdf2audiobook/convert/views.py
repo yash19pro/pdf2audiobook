@@ -16,8 +16,9 @@ def book_upload(request):
         form = BooksForm(request.POST, request.FILES)
         if form.is_valid():
             form.save()
-            return redirect('landing-page')
+            return redirect('book-list')
     return render(request, 'book_upload.html', {'form': form})
 
 def book_list(request):
-    return render(request, 'book_list.html')
+    books = Books.objects.all()
+    return render(request, 'book_list.html', {'books': books})
