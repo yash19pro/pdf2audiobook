@@ -1,5 +1,7 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.core.files.storage import FileSystemStorage
+from .forms import BooksForm
+from .models import Books
 
 # Create your views here.
 def landing_page(request):
@@ -9,8 +11,13 @@ def contact_us(request):
     return render(request, 'contact_us.html')
 
 def book_upload(request):
+    form = BooksForm()
     if request.method == 'POST':
-        uploaded_file = request.FILES['document']
-        file_save = FileSystemStorage()
-        file_save.save(uploaded_file.name, uploaded_file)
-    return render(request, 'book_upload.html')
+        form = BooksForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            return redirect('landing-page')
+    return render(request, 'book_upload.html', {'form': form})
+
+def book_list(request):
+    return render(request, 'book_list.html')
