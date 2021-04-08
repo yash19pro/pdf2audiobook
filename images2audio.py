@@ -51,19 +51,18 @@ class Image2audio:
 
         # scanning the images and extracting the text from the image
         for i in range(self.start, self.end+1):
-            b = "{}/pdf2audiobook/media/{}/page{}.jpg".format(self.pdfpath, self.pdfname, str(i + 1 - self.start))
-            t = threading.Thread(target=next_img, args=(b,))
-            print(b)
-            t.start()
+            if i < self.end:
+                b = "{}/pdf2audiobook/media/{}/page{}.jpg".format(self.pdfpath, self.pdfname, str(i + 1 - self.start))
+                t = threading.Thread(target=next_img, args=(b,))
+                print(b)
+                t.start()
             self.engine.say("page " + str(i - self.start) + ' started!')
             self.engine.runAndWait()
             self.engine.say(text)
             self.engine.runAndWait()
             print('page ' + str(i - self.start) + ' done')
-            try:
+            if i < self.end:
                 t.join()
-            except:
-                print("Thread doesn't exist")
 
 a = Image2audio("IAG", 500, 0, 1)
 a.converter()
