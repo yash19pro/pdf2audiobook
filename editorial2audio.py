@@ -9,7 +9,7 @@ import re
 
 # Access tesseract OCR by providing its location
 pytesseract.pytesseract.tesseract_cmd = r"C:\Program Files\Tesseract-OCR\tesseract.exe"
-
+# above line should be commented/uncommented depending on OS
 
 # To create a proper path for creation of temporary directory named 'imgs' which gets deleted later
 path = "imgs"
@@ -25,8 +25,10 @@ padfpath = "{}.pdf".format(pdfname)
 
 
 # Convert PDF pages to images
-pages = convert_from_path(poppler_path="C:\\poppler-21.02.0\\Library\\bin", pdf_path=padfpath, dpi=300, fmt="jpeg", grayscale=True, size=(2921, 3449))
-
+# next line should be commented on MacOS and uncommented on Windows
+# pages = convert_from_path(poppler_path="C:\\poppler-21.02.0\\Library\\bin", pdf_path=padfpath, dpi=300, fmt="jpeg", grayscale=True, size=(2921, 3449))
+# next line should be commented on Windows and uncommented on MacOS
+pages = convert_from_path('IAG.pdf')
 
 # Create imgs folder at specified path if it doesn't exist. If it exists, then delete it and create once again
 try:

@@ -5,15 +5,22 @@
 	<div class="container mx-auto flex px-5 py-24 items-center justify-center flex-col">
 		<div class="text-center lg:w-2/3 w-full">
 			<h1 class="title-font sm:text-4xl text-3xl mb-4 font-medium text-gray-900">
-				Upload
+				Upload the Book
 			</h1>
 			<form method="POST" enctype="multipart/form-data">
 				{% csrf_token %}
 				<div class="bg-gray-100" style="border-radius: 10px;">
-					<input type="file" name="document" class="text-black bg-white-500 border-0 py-2 px-6 rounded text-sm" style="padding-bottom: 40px;">
-					<button type="submit" class="ml-4 text-white bg-indigo-500 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded text-lg" style="margin-top: 30px;">
-						File Upload
-					</button>
+					<span class="text-black bg-white-500 border-0 py-2 px-6 rounded text-sm" style="padding-bottom: 40px;">
+						Title: {{ form.title }}
+					</span>
+					<span class="text-black bg-white-500 border-0 py-2 px-6 rounded text-sm" style="padding-bottom: 40px;">
+						{{ form.file }}
+					</span>
+					<a href="/">
+						<button type="submit" class="ml-4 text-white bg-indigo-500 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded text-lg" style="margin-top: 30px; margin-bottom: 30px;">
+							Upload
+						</button>
+					</a>
 				</div>
 			</form>
 		</div>
