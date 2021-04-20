@@ -18,8 +18,8 @@ class Pdf2images:
         # Convert PDF pages to images
         pages = convert_from_path(poppler_path="C:\\poppler-21.02.0\\Library\\bin", pdf_path="{}/pdf2audiobook/media/{}.pdf".format(self.pdfpath, self.pdfname), dpi=300, fmt="jpeg", grayscale=True, size=(2921, 3449))
         for i in range(self.start, self.end + 1):
-            pages[i].save('{}/pdf2audiobook/media/{}/page{}.jpg'.format(self.pdfpath, self.pdfname, i), 'JPEG')
+            pages[i].save('{}/pdf2audiobook/media/{}/page{}.jpg'.format(self.pdfpath, self.pdfname, i - self.start), 'JPEG')
             print('Page ' + str(i - self.start) + " done...")
 
-a = Pdf2images("IAG", 0, 0)
+a = Pdf2images("IAG", 15, 17)
 a.converter()

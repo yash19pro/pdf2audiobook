@@ -58,11 +58,12 @@ class Image2audio:
                 t.start()
             self.engine.say("page " + str(i - self.start) + ' started!')
             self.engine.runAndWait()
-            self.engine.say(text)
+            # self.engine.say(text)
+            self.engine.save_to_file(text, "{}/pdf2audiobook/media/{}/page{}.mp3".format(self.pdfpath, self.pdfname, i - self.start))
             self.engine.runAndWait()
             print('page ' + str(i - self.start) + ' done')
             if i < self.end:
                 t.join()
 
-a = Image2audio("IAG", 500, 0, 1)
+a = Image2audio("IAG", 500, 15, 17)
 a.converter()
