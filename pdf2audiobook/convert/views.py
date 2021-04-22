@@ -16,20 +16,8 @@ def book_upload(request):
     form = BooksForm()
     if request.method == 'POST':
         form = BooksForm(request.POST, request.FILES)
-        # diro = os.getcwd() + '/media/books/'
-        # title = str(request.FILES['file'])
-        # final_title = ""
-        # for x in title:
-        #     if x == ' ':
-        #         final_title  += '_'
-        #     else:
-        #         final_title += x
-        # request.FILES['file'].name = final_title
-        # print(request.FILES['file'].name)
-        # print(request.FILES)
         if form.is_valid():
             form.save()
-            # os.rename(diro + final_title, diro + request.POST['title'] + '.pdf')
             return redirect('book-list')
     return render(request, 'book_upload.html', {'form': form})
 
