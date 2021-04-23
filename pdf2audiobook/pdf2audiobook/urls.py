@@ -18,7 +18,7 @@ from django.urls import path
 from django.conf import settings
 from django.conf.urls.static import static
 
-from convert.views import landing_page, contact_us, book_upload, book_list, book_delete
+from convert.views import landing_page, contact_us, book_upload, book_list, book_delete, about_us
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -27,6 +27,7 @@ urlpatterns = [
     path('book/', book_list, name = 'book-list'),
     path('book-upload/', book_upload, name = 'book-upload'),
     path('book/<int:pk>/', book_delete, name = 'book-delete'),
+    path('about_us/', about_us, name = 'about-us-page'),
 ]
 
 if settings.DEBUG:

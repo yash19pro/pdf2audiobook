@@ -12,10 +12,16 @@ def landing_page(request):
 def contact_us(request):
     return render(request, 'contact_us.html')
 
+def about_us(request):
+    return render(request, 'about_us.html')
+
 def book_upload(request):
     form = BooksForm()
     if request.method == 'POST':
+        request.FILES['file'].name = request.POST['title'] + '.pdf'
         form = BooksForm(request.POST, request.FILES)
+        print(type(request.POST))
+        print(request.POST)
         if form.is_valid():
             form.save()
             return redirect('book-list')
@@ -25,7 +31,7 @@ def book_delete(request, pk):
     if request.method == 'POST':
         book = Books.objects.get(pk = pk)
         book.delete()
-    return redirect('landing-page')
+    return redirect('book-list')
 
 def book_list(request):
     books = Books.objects.all()
