@@ -1,6 +1,7 @@
 from django.db import models
 
 # Create your models here.
+
 class Books(models.Model):
 	title = models.CharField(max_length=100)
 	file = models.FileField(upload_to='books/')
@@ -12,12 +13,14 @@ class Books(models.Model):
 		self.file.delete()
 		super().delete(*args, **kwargs)
 
-class Audiobooks(models.Model):
-	title = models.ForeignKey(Books, on_delete=models.CASCADE)
-	audiobook = models.FileField(upload_to="audiobook_books/")
+class Chapters(models.Model):
+	chapter = models.ForeignKey(Books, on_delete=models.CASCADE)
+	chap_no = models.PositiveIntegerField()
 
-	def __str__(self):
-		return self.title
+class AudioBook(models.Model):
+	audio = models.ForeignKey(Chapters, on_delete=models.CASCADE)
+	image = models.ImageField()
+	audio_file = models.FileField()
 
 class Editorial(models.Model):
 	title = models.CharField(max_length=100)
