@@ -9,6 +9,8 @@ from google_drive_downloader import GoogleDriveDownloader as Gdd
 import threading
 import time
 
+
+
 # Access tesseract OCR by providing its location
 pytesseract.pytesseract.tesseract_cmd = r"C:\Program Files\Tesseract-OCR\tesseract.exe"
 # above line should be commented/uncommented depending on OS
@@ -23,47 +25,49 @@ engine.setProperty('rate', 185)
 
 # PDF input mode
 # Make necessary changes "HERE!!!" while integrating
-pdfpath = str()
-pdfname = str()
+pdf_path = str()
+pdf_name = str()
 mode = int(input("#####\tMENU\t#####\n1: Input using Google Drive link\n2: Upload PDF\nYour choice: "))
 if mode == 1:
     drive_link = input("Enter drive link for The Hindu Newspaper pdf: ").strip()
     file_name = input("Save as (*.pdf): ").strip()
     file_id = re.split(r'/', drive_link)
-    Gdd.download_file_from_google_drive(file_id=file_id[5], dest_path='./data/{}.pdf'.format(file_name), showsize=True)
-    pdfname = file_name
-    pdfpath = './data/{}.pdf'.format(file_name)
+    Gdd.download_file_from_google_drive(file_id=file_id[5], dest_path='./pdf2audiobook/media/books/{}.pdf'.format(file_name), showsize=True)
+    pdf_name = file_name
+    pdf_path = './pdf2audiobook/media/books/{}.pdf'.format(file_name)
 elif mode == 2:
-    pdfname = str(input("Enter name of PDF: "))
-    pdfpath = "{}.pdf".format(pdfname)
+    pdf_name = str(input("Enter name of PDF: "))
+    pdf_path = "./pdf2audiobook/media/books/{}.pdf".format(pdf_name)
 else:
     print("Invalid input!!!")
     exit(0)
 
 # Convert PDF pages to images
 # next line should be commented on MacOS and uncommented on Windows
-pages = convert_from_path(poppler_path="C:/poppler-21.02.0/Library/bin", pdf_path=pdfpath, dpi=300, fmt="jpeg", grayscale=True, size=(2921, 3449))
+pages = convert_from_path(poppler_path="C:/poppler-21.02.0/Library/bin", pdf_path=pdf_path, dpi=300, fmt="jpeg", grayscale=True, size=(2921, 3449))
 # next line should be commented on Windows and uncommented on MacOS
-# pages = convert_from_path(pdfpath)
+# pages = convert_from_path(pdf_path)
 
 
 # Create imgs folder at specified path if it doesn't exist. If it exists, then delete it and create once again
 try:
     os.mkdir(path)
-    os.mkdir(pdfname)
+    os.makedirs("./pdf2audiobook/media/Editorials/{}".format(pdf_name), exist_ok=True)
 except FileExistsError:
     shutil.rmtree(path, ignore_errors=True)
-    shutil.rmtree(pdfname, ignore_errors=True)
+    shutil.rmtree(pdf_name, ignore_errors=True)
     os.mkdir(path)
-    os.mkdir(pdfpath)
+    os.makedirs("./pdf2audiobook/media/Editorials/{}".format(pdf_name), exist_ok=True)
 
 # Text is used to find whether the page has editorials or not
 text = str()
 print("Number of pages: ", len(pages))
 
+editorial_audiobooks_path = "./pdf2audiobook/media/Editorials/{}".format(pdf_name)
+
 # Saves the images in jpeg format
 for i in range(len(pages)):
-    imgname = "imgs/{}{}.jpeg".format(pdfname, i)
+    imgname = "imgs/{}{}.jpeg".format(pdf_name, i)
     pages[i].save(imgname, 'JPEG')
 
 
@@ -80,7 +84,9 @@ def left_column_editorial(img):
     edi1 = re.sub(r"\n\b", " ", edi1)
     edi1 = re.sub(r"-\s", "", edi1)
 
-    engine.save_to_file(edi1, "{}/Edi1.mp3".format(pdfname))
+    cv2.imwrite('{}/Column Editorial.jpeg'.format(editorial_audiobooks_path), img_edi1)
+    cv2.waitKey(0)
+    engine.save_to_file(edi1, "{}/Column Editorial.mp3".format(editorial_audiobooks_path))
     engine.runAndWait()
     print("Column editorial processing done!!!")
 
@@ -110,9 +116,9 @@ def upper_right_editorial(img_edi2):
     edi2 = re.sub(r"\n\b", " ", edi2)
     edi2 = re.sub(r"-\s", "", edi2)
 
-    cv2.imwrite('{}/edi2.jpeg'.format(pdfname), img_edi2)
+    cv2.imwrite('{}/Upper Right Editorial.jpeg'.format(editorial_audiobooks_path), img_edi2)
     cv2.waitKey(0)
-    engine.save_to_file(edi2, "{}/Edi2.mp3".format(pdfname))
+    engine.save_to_file(edi2, "{}/Upper Right Editorial.mp3".format(editorial_audiobooks_path))
     engine.runAndWait()
     print("Upper right editorial processing done!!!")
 
@@ -142,18 +148,19 @@ def lower_right_editorial(img_edi3):
     edi3 = re.sub(r"\n\b", " ", edi3)
     edi3 = re.sub(r"-\s", "", edi3)
 
-    cv2.imwrite('{}/edi3.jpeg'.format(pdfname), img_edi3)
+    cv2.imwrite('{}/Lower Right Editorial.jpeg'.format(editorial_audiobooks_path), img_edi3)
     cv2.waitKey(0)
     # os.system('start edi3.jpeg')
-    engine.save_to_file(edi3, "{}/Edi3.mp3".format(pdfname))
+    engine.save_to_file(edi3, "{}/Lower Right Editorial.mp3".format(editorial_audiobooks_path))
     engine.runAndWait()
     print("Lower right editorial processing done!!!")
 
 
 # Reads upper left corner of each page.
 title = str()
+flag = 0
 for i in range(len(pages)):
-    img = cv2.imread("imgs/{}{}.jpeg".format(pdfname, i))
+    img = cv2.imread("imgs/{}{}.jpeg".format(pdf_name, i))
     img_title = img[80:140, 180:650]
 
     # Converts image to grey scale and then thresholds it.
@@ -170,6 +177,7 @@ for i in range(len(pages)):
 
     if title == "EDITORIAL":
 
+        flag = 1
         # Processing left column editorial using thread to achieve speed
         t1 = threading.Thread(target=left_column_editorial, args=(img,))
         t1.start()
@@ -218,8 +226,6 @@ for i in range(len(pages)):
         t3 = threading.Thread(target=lower_right_editorial, args=(img_edi3,))
         t3.start()
 
-        # t1.join()
-        # t2.join()
-        # t3.join()
-
+if flag == 0:
+    print("There is 'NO EDITORIAL' in this Newspaper")
 shutil.rmtree(path, ignore_errors=True)
