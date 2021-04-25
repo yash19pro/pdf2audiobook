@@ -1,12 +1,14 @@
 from django.shortcuts import render, redirect
 from django.core.files.storage import FileSystemStorage
-from .forms import BooksForm
-from .models import Books
+from .forms import BooksForm, EditorialForm
+from .models import Books, Editorial
 
 import os
 
 
 # Create your views here.
+
+# home page views
 def landing_page(request):
     return render(request, 'landing_page.html')
 
@@ -46,3 +48,15 @@ def book_delete(request, pk):
 def book_list(request):
     books = Books.objects.all()
     return render(request, 'book_list.html', {'books': books})
+
+def editorial_upload(request):
+    form = EditorialForm()
+    if request.method == 'POST':
+        request.FILES['file'].name = request.POST['title'] + '.pdf'
+        form = EditorialForm(request.POST, request.FILES)
+        print(type(request.POST))
+        print(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('book-list')
+    return render(request, 'editorial_upload.html', {'form': form})
