@@ -1,6 +1,5 @@
-from google_drive_downloader import GoogleDriveDownloader as gdd
-import re
-
-drive_link = input("Enter drive link for The Hindu Newspaper pdf: ").strip()
-file_id = re.split(r'/', drive_link)
-gdd.download_file_from_google_drive(file_id=file_id[5], dest_path='./data/mnist.pdf', showsize=True)
+print("Hi Ojas")
+x = input("Press Enter:")
+from editorial2audio import Editorial2audiobook
+x = Editorial2audiobook(mode=1, drive_link="https://drive.google.com/file/d/1a4U0GsOiAtmJDFM3dbQUechOqVSRM7Fy/view?usp=drivesdk",
+        file_name="TH25April")
