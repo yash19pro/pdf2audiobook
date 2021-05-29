@@ -69,12 +69,12 @@ class Image2audio:
                 t.join()
 
 
-f = open('{}/pdf2audiobook/media/{}/Index.txt'.format(os.path.dirname(__file__), "Eat_That_Frog"))
+f = open('{}/pdf2audiobook/media/{}/Index.txt'.format(os.path.dirname(__file__), "IAG"))
 makemyindex = f.read()
 makemyindex = ast.literal_eval(makemyindex)
 
 index_keys = list(makemyindex.keys())
 index_values = list(makemyindex.values())
 for x in range(len(index_values)):
-    a = Image2audio("Eat_That_Frog", index_keys[x], 500, index_values[x][0], index_values[x][1])
+    a = Image2audio("IAG", index_keys[x], 500, index_values[x][0], index_values[x][1])
     a.converter()
