@@ -9,12 +9,15 @@
 			</h1>
 			<form method="POST" enctype="multipart/form-data">
 				{% csrf_token %}
-				<div class="bg-gray-100" style="border-radius: 10px;">
+				<div class="bg-gray-100 flex flex-col" style="border-radius: 10px;">
 					<span class="text-black bg-white-500 border-0 py-2 px-6 rounded text-sm" style="padding-bottom: 40px;">
 						Title: {{ form.title }}
 					</span>
 					<span class="text-black bg-white-500 border-0 py-2 px-6 rounded text-sm" style="padding-bottom: 40px;">
 						{{ form.file }}
+					</span>
+					<span class="text-black bg-white-500 border-0 py-2 px-6 rounded text-sm" style="padding-bottom: 40px;">
+						Index: {{ form.index }}
 					</span>
 					<a href="/">
 						<button type="submit" class="ml-4 text-white bg-indigo-500 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded text-lg" style="margin-top: 30px; margin-bottom: 30px;">

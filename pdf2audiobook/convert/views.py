@@ -28,6 +28,18 @@ def book_upload(request):
         print(request.POST)
         if form.is_valid():
             form.save()
+
+			# we have to add the fuction to convert pdf to audio book here, as the form is already saved
+			## Covert the pdf to images
+
+
+			## Grab the index
+
+
+			## Convert the given index to text and store the audio files
+
+			
+
             return redirect('book-list')
     return render(request, 'book_upload.html', {'form': form})
 
