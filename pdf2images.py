@@ -4,7 +4,6 @@ import os
 import re
 from stat import S_IREAD
 
-
 class Pdf2images:
     # Constructor
     def __init__(self, pdfname, chapter_name, start, end, pages):
@@ -27,7 +26,6 @@ class Pdf2images:
                                                                                 self.chapter_name, i - self.start),
                                													'JPEG')
             print('Page ' + str(i - self.start) + " done...")
-
 
 def makemyindex():
     index = dict()

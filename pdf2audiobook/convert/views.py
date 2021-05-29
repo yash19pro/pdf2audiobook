@@ -38,7 +38,6 @@ def book_upload(request):
 
 			## Convert the given index to text and store the audio files
 
-			
 
             return redirect('book-list')
     return render(request, 'book_upload.html', {'form': form})
