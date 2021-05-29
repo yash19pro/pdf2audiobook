@@ -9,7 +9,6 @@ from google_drive_downloader import GoogleDriveDownloader as Gdd
 import threading
 import time
 
-
 class Editorial2audiobook:
     def __init__(self, mode, drive_link, file_name):
         # Access tesseract OCR by providing its location
