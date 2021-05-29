@@ -10,7 +10,6 @@ import ast
 
 text = str()
 
-
 def next_img(name):
     global text
     print("Thread execution started")

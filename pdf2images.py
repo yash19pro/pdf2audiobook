@@ -24,7 +24,8 @@ class Pdf2images:
 
         for i in range(self.start, self.end + 1):
             self.pages[i].save('{}/pdf2audiobook/media/{}/{}/page{}.jpg'.format(self.pdfpath, self.pdfname,
-                                                                                self.chapter_name, i - self.start), 'JPEG')
+                                                                                self.chapter_name, i - self.start),
+                               													'JPEG')
             print('Page ' + str(i - self.start) + " done...")
 
 
@@ -47,15 +48,16 @@ def makemyindex():
     print(index)
     return index
 
-
 def pager(pdfpath, pdfname):
     # Convert PDF pages to images
-    pages = convert_from_path(poppler_path="C:\\poppler-21.02.0\\Library\\bin",
-                              pdf_path="{}/pdf2audiobook/media/books/{}.pdf".format(pdfpath, pdfname),
-                              dpi=300, fmt="jpeg", grayscale=True, size=(2921, 3449))
+    # pages = convert_from_path(poppler_path="C:\\poppler-21.02.0\\Library\\bin",
+    #                           pdf_path="{}/pdf2audiobook/media/books/{}.pdf".format(pdfpath, pdfname),
+    #                           dpi=300, fmt="jpeg", grayscale=True, size=(2921, 3449))
+    pages = convert_from_path("{}/pdf2audiobook/media/books/{}.pdf".format(pdfpath, pdfname))
     os.mkdir('{}/pdf2audiobook/media/{}'.format(pdfpath, pdfname))
     return pages
 
+print(os.path.dirname(__file__))
 
 name_of_pdf = input("Name of the book: ").strip()
 
@@ -63,6 +65,7 @@ Index = makemyindex()
 index_keys = list(Index.keys())
 index_values = list(Index.values())
 
+print(os.path.dirname(__file__))
 pdf_pages = pager(os.path.dirname(__file__), name_of_pdf)
 print(type(pdf_pages), len(pdf_pages))
 for x in range(len(Index)):
