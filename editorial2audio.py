@@ -16,7 +16,6 @@ class Editorial2audiobook:
         pytesseract.pytesseract.tesseract_cmd = r"C:\Program Files\Tesseract-OCR\tesseract.exe"
         # above line should be commented/uncommented depending on OS
 
-
         # To create a proper path for creation of temporary directory named 'imgs' which gets deleted later
         path = "imgs"
 
@@ -33,13 +32,13 @@ class Editorial2audiobook:
             # drive_link = input("Enter drive link for The Hindu Newspaper pdf: ").strip()
             # file_name = input("Save as (*.pdf): ").strip()
             file_id = re.split(r'/', drive_link)
-            Gdd.download_file_from_google_drive(file_id=file_id[5], dest_path='./pdf2audiobook/media/books/{}.pdf'.format(file_name), showsize=True)
+            Gdd.download_file_from_google_drive(file_id=file_id[5], dest_path='./pdf2audiobook/media/Editorials/{}.pdf'.format(file_name), showsize=True)
             pdf_name = file_name
-            pdf_path = './pdf2audiobook/media/books/{}.pdf'.format(file_name)
+            pdf_path = './pdf2audiobook/media/Editorials/{}.pdf'.format(file_name)
         elif mode == 2:
             # pdf_name = str(input("Enter name of PDF: "))
             pdf_name = file_name
-            pdf_path = "./pdf2audiobook/media/books/{}.pdf".format(pdf_name)
+            pdf_path = "./pdf2audiobook/media/Editorials/{}.pdf".format(pdf_name)
         else:
             print("Invalid input!!!")
             exit(0)
@@ -50,27 +49,28 @@ class Editorial2audiobook:
         # next line should be commented on Windows and uncommented on MacOS
         # pages = convert_from_path(pdf_path)
 
-
         # Create imgs folder at specified path if it doesn't exist. If it exists, then delete it and create once again
         try:
             os.makedirs("./{}".format(path), exist_ok=True)
-            os.makedirs("./pdf2audiobook/media/Editorials/{}".format(pdf_name), exist_ok=True)
+            os.makedirs("./pdf2audiobook/media/audiobook_editorials/{}/audio".format(pdf_name), exist_ok=True)
+            os.makedirs("./pdf2audiobook/media/audiobook_editorials/{}/images".format(pdf_name), exist_ok=True)
         except FileExistsError:
             # shutil.rmtree(path, ignore_errors=True)
             os.makedirs("./{}".format(path), exist_ok=True)
-            os.makedirs("./pdf2audiobook/media/Editorials/{}".format(pdf_name), exist_ok=True)
+            os.makedirs("./pdf2audiobook/media/audiobook_editorials/{}/audio".format(pdf_name), exist_ok=True)
+            os.makedirs("./pdf2audiobook/media/audiobook_editorials/{}/images".format(pdf_name), exist_ok=True)
 
         # Text is used to find whether the page has editorials or not
-        text = str()
+        # text = str()
         print("Number of pages: ", len(pages))
 
-        editorial_audiobooks_path = "./pdf2audiobook/media/Editorials/{}".format(pdf_name)
+        editorial_audiobooks_path = "./pdf2audiobook/media/audiobook_editorials/{}/audio".format(pdf_name)
+        editorial_thumbnails_path = "./pdf2audiobook/media/audiobook_editorials/{}/images".format(pdf_name)
 
         # Saves the images in jpeg format
         for i in range(len(pages)):
             imgname = "imgs/{}{}.jpeg".format(pdf_name, i)
             pages[i].save(imgname, 'JPEG')
-
 
         def left_column_editorial(img):
             # Processes left column editorial
@@ -85,7 +85,7 @@ class Editorial2audiobook:
             edi1 = re.sub(r"\n\b", " ", edi1)
             edi1 = re.sub(r"-\s", "", edi1)
 
-            cv2.imwrite('{}/Column Editorial.jpeg'.format(editorial_audiobooks_path), img_edi1)
+            cv2.imwrite('{}/Column Editorial.jpeg'.format(editorial_thumbnails_path), img_edi1)
             cv2.waitKey(0)
             engine.save_to_file(edi1, "{}/Column Editorial.mp3".format(editorial_audiobooks_path))
             engine.runAndWait()
@@ -117,7 +117,7 @@ class Editorial2audiobook:
             edi2 = re.sub(r"\n\b", " ", edi2)
             edi2 = re.sub(r"-\s", "", edi2)
 
-            cv2.imwrite('{}/Upper Right Editorial.jpeg'.format(editorial_audiobooks_path), img_edi2)
+            cv2.imwrite('{}/Upper Right Editorial.jpeg'.format(editorial_thumbnails_path), img_edi2)
             cv2.waitKey(0)
             engine.save_to_file(edi2, "{}/Upper Right Editorial.mp3".format(editorial_audiobooks_path))
             engine.runAndWait()
@@ -149,7 +149,7 @@ class Editorial2audiobook:
             edi3 = re.sub(r"\n\b", " ", edi3)
             edi3 = re.sub(r"-\s", "", edi3)
 
-            cv2.imwrite('{}/Lower Right Editorial.jpeg'.format(editorial_audiobooks_path), img_edi3)
+            cv2.imwrite('{}/Lower Right Editorial.jpeg'.format(editorial_thumbnails_path), img_edi3)
             cv2.waitKey(0)
             # os.system('start edi3.jpeg')
             engine.save_to_file(edi3, "{}/Lower Right Editorial.mp3".format(editorial_audiobooks_path))
@@ -235,3 +235,6 @@ class Editorial2audiobook:
         if flag == 0:
             print("There is 'NO EDITORIAL' in this Newspaper")
         shutil.rmtree(path, ignore_errors=True)
+
+
+# a = Editorial2audiobook(2, "https://drive.google.com/file/d/1mbBv1BQaWGr8qp7etr85r6B7imZ6KHLD/view?usp=sharing", "TH29May")

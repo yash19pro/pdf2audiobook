@@ -18,12 +18,12 @@ class Pdf2images:
     def converter(self):
         # Creates a folder to store images
         try:
-            os.mkdir('{}/pdf2audiobook/media/{}/{}'.format(self.pdfpath, self.pdfname, self.chapter_name))
+            os.makedirs('{}/pdf2audiobook/media/audiobook_books/{}/images/{}'.format(self.pdfpath, self.pdfname, self.chapter_name), exist_ok=True)
         except FileExistsError:
             pass
 
         for i in range(self.start, self.end + 1):
-            self.pages[i].save('{}/pdf2audiobook/media/{}/{}/page{}.jpg'.format(self.pdfpath, self.pdfname,
+            self.pages[i].save('{}/pdf2audiobook/media/audiobook_books/{}/images/{}/page{}.jpg'.format(self.pdfpath, self.pdfname,
                                                                                 self.chapter_name, i - self.start), 'JPEG')
             print('Page ' + str(i - self.start) + " done...")
 
@@ -53,7 +53,7 @@ def pager(pdfpath, pdfname):
     pages = convert_from_path(poppler_path="C:\\poppler-21.02.0\\Library\\bin",
                               pdf_path="{}/pdf2audiobook/media/books/{}.pdf".format(pdfpath, pdfname),
                               dpi=300, fmt="jpeg", grayscale=True, size=(2921, 3449))
-    os.mkdir('{}/pdf2audiobook/media/{}'.format(pdfpath, pdfname))
+    os.makedirs('{}/pdf2audiobook/media/audiobook_books/{}'.format(pdfpath, pdfname), exist_ok=True)
     return pages
 
 
@@ -64,12 +64,11 @@ index_keys = list(Index.keys())
 index_values = list(Index.values())
 
 pdf_pages = pager(os.path.dirname(__file__), name_of_pdf)
-print(type(pdf_pages), len(pdf_pages))
 for x in range(len(Index)):
     a = Pdf2images(name_of_pdf, index_keys[x], int(index_values[x][0]), int(index_values[x][1]), pdf_pages)
     a.converter()
-f = open('{}/pdf2audiobook/media/{}/Index.txt'.format(os.path.dirname(__file__), name_of_pdf), 'w')
+f = open('{}/pdf2audiobook/media/audiobook_books/{}/Index.txt'.format(os.path.dirname(__file__), name_of_pdf), 'w')
 f.write(str(Index))
 f.close()
 
-os.chmod('{}/pdf2audiobook/media/{}/Index.txt'.format(os.path.dirname(__file__), name_of_pdf), S_IREAD)
+os.chmod('{}/pdf2audiobook/media/audiobook_books/{}/Index.txt'.format(os.path.dirname(__file__), name_of_pdf), S_IREAD)
