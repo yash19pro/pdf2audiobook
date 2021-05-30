@@ -53,7 +53,13 @@ def book_upload(request):
             index_string = request.POST['index']
 
             # calling the function
-            pager(name_of_pdf, index_string=index_string)
+
+            if index_string == 'editorial':
+                print('in editorial')
+                a = Editorial2audiobook(2, None, request.POST['title'])
+            else:
+                print('in pager')
+                pager(name_of_pdf, index_string=index_string)
 
             return redirect('book-list')
     return render(request, 'book_upload.html', {'form': form})
