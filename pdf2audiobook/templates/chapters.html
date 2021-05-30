@@ -2,6 +2,11 @@
 {% block content %}
 
 {% for x in books %}
-    <div><a href="{% url 'chapter' name=bookname chapID=x %}">Audiobook</a></div>
+    <div class="bg-white p-5 text-center shadow-2xl" style="background: #4b636e">
+        <div>
+            <a href="{% url 'chapter' name=bookname chapID=x %}" class="inline-block border border-white-500 text-white-500 rounded-full px-6 py-2 mr-4 shadow-2xl" style="background: teal">Chapter {{ x }}</a>
+        </div>
+    </div>
+
 {% endfor %}
 {% endblock content %}
