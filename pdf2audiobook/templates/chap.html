@@ -4,10 +4,11 @@
 <h1 class="text-gray-600 body-font text-6xl">Chapter {{ chapID }}:</h1>
 <div style="display: block; margin-bottom: 185px">
 {% for x in books %}
-    <div class="p-5">
-        <figcaption class="text-2xl">
-
-            Page {{ x }}
+    <div class="ml-52 p-10 flex flex-row">
+        <figcaption class="text-2xl mt-3 mr-5">
+			<a href="/media/audiobook_books/{{ bookname }}/images/Chapter{{ chapID }}/page{{ x }}.jpg" target="_blank">
+				Page {{ x }}
+			</a>
         </figcaption>
         <audio controls>
             <source src="/media/audiobook_books/{{ bookname }}/audio/Chapter{{ chapID }}/page{{ x }}.mp3" type="audio/mpeg">
@@ -16,3 +17,7 @@
 {% endfor %}
 </div>
 {% endblock content %}
+
+
+
+<!-- <a href="/media/audiobook_books/{{ bookname }}/images/Chapter{{ chapID }}/page{{ x }}.jpg"> -->
