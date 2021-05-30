@@ -9,6 +9,7 @@ import os
 from pdf2images import Pdf2images
 from images2audio import Image2audio
 from pdf2image import convert_from_path
+from editorial2audio import Editorial2audiobook
 import re
 # import pytesseract
 # import threading
@@ -112,6 +113,7 @@ def editorial_upload(request):
         print(request.POST)
         if form.is_valid():
             form.save()
+            a = Editorial2audiobook(2, "https://drive.google.com/file/d/1mbBv1BQaWGr8qp7etr85r6B7imZ6KHLD/view?usp=sharing", request.POST['title'])
             return redirect('book-list')
     return render(request, 'editorial_upload.html', {'form': form})
 
