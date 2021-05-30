@@ -11,19 +11,10 @@ from images2audio import Image2audio
 from pdf2image import convert_from_path
 from editorial2audio import Editorial2audiobook
 import re
-# import pytesseract
-# import threading
-# import cv2
-# import pyttsx3
-# import time
-# import ast
-# from stat import S_IREAD
 
 # Create your views here.
 
 # home page views
-
-
 def landing_page(request):
     return render(request, 'landing_page.html')
 
@@ -64,30 +55,6 @@ def book_upload(request):
             # calling the function
             pager(name_of_pdf, index_string=index_string)
 
-            # Convert the given index to text and store the audio files
-            # text = str()
-
-            # def next_img(name):
-            # 	global text
-            # 	print("Thread execution started")
-            # 	time.sleep(5)
-            # 	img = cv2.imread(name)
-            # 	# gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-            # 	# ret, img_threshold = cv2.threshold(gray, 170, 255, cv2.THRESH_BINARY)
-            # 	text = pytesseract.image_to_string(img)
-            # 	text = re.sub(r"\b\n", " ", text)
-            # 	text = re.sub(r"\n\b", " ", text)
-            # 	text = re.sub(r"-\s", "", text)
-            # 	print(text)
-            # 	print("Thread execution ended")
-
-            # index_keys = list(Index.keys())
-            # index_values = list(Index.values())
-            # for x in range(len(index_values)):
-            # 	a = Image2audio(
-            # 		name_of_pdf, index_keys[x], 500, index_values[x][0], index_values[x][1])
-            # 	a.converter(text)
-
             return redirect('book-list')
     return render(request, 'book_upload.html', {'form': form})
 
@@ -101,7 +68,12 @@ def book_delete(request, pk):
 
 def book_list(request):
     books = Books.objects.all()
-    return render(request, 'book_list.html', {'books': books})
+    editorials = Editorial.objects.all()
+    context = {
+        'books': books,
+        'editorials': editorials,
+    }
+    return render(request, 'book_list.html', context)
 
 
 def editorial_upload(request):
@@ -113,49 +85,24 @@ def editorial_upload(request):
         print(request.POST)
         if form.is_valid():
             form.save()
-            a = Editorial2audiobook(2, "https://drive.google.com/file/d/1mbBv1BQaWGr8qp7etr85r6B7imZ6KHLD/view?usp=sharing", request.POST['title'])
+            a = Editorial2audiobook(
+                2, "https://drive.google.com/file/d/1mbBv1BQaWGr8qp7etr85r6B7imZ6KHLD/view?usp=sharing", request.POST['title'])
             return redirect('book-list')
     return render(request, 'editorial_upload.html', {'form': form})
 
 # --------------------------
 # index: 4 : 4-7, 9-15, 17-19, 21-27
 # --------------------------
-# def makemyindex(index_string):
-#     index = dict()
-#     # index_string = input("Enter the index string in following format:\n"
-#     #                      "No. of chapters : page ranges separated by commas (E.g. 3 : 1-4, 5-10, 11-15)\n"
-#     #                      "Index string: ").rstrip()
-#     index_string = re.split(r':', index_string)
-#     n = int(index_string[0])
-#     page_ranges = re.split(r',', index_string[1])
-#     if len(page_ranges) != n:
-#         print("Page ranges does not match with number of chapters.")
-#         return index
-#     counter = 0
-#     for i in page_ranges:
-#         chapter_bounds_split = re.split(r"-", i)
-#         index["Chapter {}".format(counter)] = (
-#             int(chapter_bounds_split[0]), int(chapter_bounds_split[1]))
-#         counter += 1
-#     print(index)
-#     return index
-
-# def pager(pdfpath=os.path.dirname(__file__), pdfname, index):
-
 
 def pager(pdfname, index_string):
     pdfpath = os.path.dirname(__file__)
     # makemyindex
     index = dict()
-    # index_string = input("Enter the index string in following format:\n"
-    #                      "No. of chapters : page ranges separated by commas (E.g. 3 : 1-4, 5-10, 11-15)\n"
-    #                      "Index string: ").rstrip()
     index_string = re.split(r':', index_string)
     n = int(index_string[0])
     page_ranges = re.split(r',', index_string[1])
     if len(page_ranges) != n:
         print("Page ranges does not match with number of chapters.")
-        # return index
     counter = 0
 
     pdf_pages = convert_from_path("./media/books/{}.pdf".format(pdfname))
@@ -182,55 +129,3 @@ def pager(pdfname, index_string):
         a.converter()
 
     # Convert PDF pages to images
-
-    # Uncomment below lines for Windows
-    # pages = convert_from_path(poppler_path="C:\\poppler-21.02.0\\Library\\bin",
-    #                           pdf_path="{}/pdf2audiobook/media/books/{}.pdf".format(
-    #                               pdfpath, pdfname),
-    #                           dpi=300, fmt="jpeg", grayscale=True, size=(2921, 3449))
-    # pdf_pages = convert_from_path(
-    #     "{}/media/books/{}.pdf".format(pdfpath, pdfname))
-    # os.makedirs('{}/media/audiobook_books/{}'.format(pdfpath,
-    #                                                  pdfname), exist_ok=True)
-    # for x in range(len(index)):
-    #     a = Pdf2images(pdfname, index_keys[x], int(
-    #         index_values[x][0]), int(index_values[x][1]), pdf_pages)
-    #     a.converter()
-    # return pages
-
-
-# name_of_pdf = input("Name of the book: ").strip()
-
-
-# pdf_pages = pager(os.path.dirname(__file__), name_of_pdf)
-
-# f = open('{}/media/audiobook_books/{}/Index.txt'.format(os.path.dirname(__file__), name_of_pdf), 'w')
-# f.write(str(Index))
-# f.close()
-
-# os.chmod('{}/media/audiobook_books/{}/Index.txt'.format(os.path.dirname(__file__), name_of_pdf), S_IREAD)
-
-# text = str()
-
-# def next_img(name):
-#     global text
-#     print("Thread execution started")
-#     time.sleep(5)
-#     img = cv2.imread(name)
-#     # gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-#     # ret, img_threshold = cv2.threshold(gray, 170, 255, cv2.THRESH_BINARY)
-#     text = pytesseract.image_to_string(img)
-#     text = re.sub(r"\b\n", " ", text)
-#     text = re.sub(r"\n\b", " ", text)
-#     text = re.sub(r"-\s", "", text)
-#     print(text)
-#     print("Thread execution ended")
-
-
-# index_keys = list(Index.keys())
-# index_values = list(Index.values())
-# for x in range(len(index_values)):
-#     a = Image2audio(
-#         name_of_pdf, index_keys[x], 500, index_values[x][0], index_values[x][1])
-#     a.converter(text)
-# index: 4 : 4-7, 9-15, 17-19, 21-25
