@@ -76,11 +76,12 @@ def first_page(request, name):
 
 
 def chapter_page(request, name, chapID):
-	files = os.listdir(str(os.path.dirname(__file__)) +
-	                     '/../media/audiobook_books/{}/Chapter'.format(name) + str(chapID))
-	no_of_files = [x for x in range(len(files))]
-	context = { 'books': no_of_files, 'bookname': name, 'chapID': chapID }
-	render(request, 'chap.html', context)
+    files = os.listdir(str(os.path.dirname(__file__)) +
+                       '/../media/audiobook_books/{}/Chapter'.format(name) + str(chapID))
+    no_of_files = [x for x in range(len(files))]
+    context = {'books': no_of_files, 'bookname': name, 'chapID': chapID}
+    render(request, 'chap.html', context)
+
 
 def book_delete(request, pk):
     if request.method == 'POST':
