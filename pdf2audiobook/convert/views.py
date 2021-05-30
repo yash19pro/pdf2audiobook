@@ -102,7 +102,7 @@ def pager(pdfname, index_string):
 
     for i in page_ranges:
         chapter_bounds_split = re.split(r"-", i)
-        index["Chapter {}".format(counter)] = (
+        index["Chapter{}".format(counter)] = (
             int(chapter_bounds_split[0]), int(chapter_bounds_split[1]))
         counter += 1
     print(index)

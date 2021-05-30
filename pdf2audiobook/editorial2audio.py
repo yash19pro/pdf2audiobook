@@ -94,10 +94,10 @@ class Editorial2audiobook:
             edi1 = re.sub(r"-\s", "", edi1)
 
             cv2.imwrite(
-                '{}/Column Editorial.jpeg'.format(editorial_thumbnails_path), img_edi1)
+                '{}/ColumnEditorial.jpeg'.format(editorial_thumbnails_path), img_edi1)
             cv2.waitKey(0)
             engine.save_to_file(
-                edi1, "{}/Column Editorial.mp3".format(editorial_audiobooks_path))
+                edi1, "{}/ColumnEditorial.mp3".format(editorial_audiobooks_path))
             engine.runAndWait()
             print("Column editorial processing done!!!")
 
@@ -128,10 +128,10 @@ class Editorial2audiobook:
             edi2 = re.sub(r"-\s", "", edi2)
 
             cv2.imwrite(
-                '{}/Upper Right Editorial.jpeg'.format(editorial_thumbnails_path), img_edi2)
+                '{}/UpperRightEditorial.jpeg'.format(editorial_thumbnails_path), img_edi2)
             cv2.waitKey(0)
             engine.save_to_file(
-                edi2, "{}/Upper Right Editorial.mp3".format(editorial_audiobooks_path))
+                edi2, "{}/UpperRightEditorial.mp3".format(editorial_audiobooks_path))
             engine.runAndWait()
             print("Upper right editorial processing done!!!")
 
@@ -162,11 +162,11 @@ class Editorial2audiobook:
             edi3 = re.sub(r"-\s", "", edi3)
 
             cv2.imwrite(
-                '{}/Lower Right Editorial.jpeg'.format(editorial_thumbnails_path), img_edi3)
+                '{}/LowerRightEditorial.jpeg'.format(editorial_thumbnails_path), img_edi3)
             cv2.waitKey(0)
             # os.system('start edi3.jpeg')
             engine.save_to_file(
-                edi3, "{}/Lower Right Editorial.mp3".format(editorial_audiobooks_path))
+                edi3, "{}/LowerRightEditorial.mp3".format(editorial_audiobooks_path))
             engine.runAndWait()
             print("Lower right editorial processing done!!!")
 
