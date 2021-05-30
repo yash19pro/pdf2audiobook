@@ -1,8 +1,8 @@
 # Django libraries
 from django.shortcuts import render, redirect
 from django.core.files.storage import FileSystemStorage
-from .forms import BooksForm, EditorialForm
-from .models import Books, Editorial
+from .forms import BooksForm
+from .models import Books
 
 # Other libraries
 import os
@@ -68,27 +68,13 @@ def book_delete(request, pk):
 
 def book_list(request):
     books = Books.objects.all()
-    editorials = Editorial.objects.all()
     context = {
         'books': books,
-        'editorials': editorials,
     }
     return render(request, 'book_list.html', context)
 
-
-def editorial_upload(request):
-    form = EditorialForm()
-    if request.method == 'POST':
-        request.FILES['file'].name = request.POST['title'] + '.pdf'
-        form = EditorialForm(request.POST, request.FILES)
-        print(type(request.POST))
-        print(request.POST)
-        if form.is_valid():
-            form.save()
-            a = Editorial2audiobook(
-                2, "https://drive.google.com/file/d/1mbBv1BQaWGr8qp7etr85r6B7imZ6KHLD/view?usp=sharing", request.POST['title'])
-            return redirect('book-list')
-    return render(request, 'editorial_upload.html', {'form': form})
+# a = Editorial2audiobook(
+#     2, "https://drive.google.com/file/d/1mbBv1BQaWGr8qp7etr85r6B7imZ6KHLD/view?usp=sharing", request.POST['title'])
 
 # --------------------------
 # index: 4 : 4-7, 9-15, 17-19, 21-27
