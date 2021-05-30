@@ -93,11 +93,13 @@ class Editorial2audiobook:
             edi1 = re.sub(r"\n\b", " ", edi1)
             edi1 = re.sub(r"-\s", "", edi1)
 
+            os.makedirs("./media/audiobook_books/{}/audio/Chapter0".format(pdf_name), exist_ok=True)
+            os.makedirs("./media/audiobook_books/{}/images/Chapter0".format(pdf_name), exist_ok=True)
             cv2.imwrite(
-                '{}/ColumnEditorial.jpeg'.format(editorial_thumbnails_path), img_edi1)
+                '{}/Chapter0/page0.jpeg'.format(editorial_thumbnails_path), img_edi1)
             cv2.waitKey(0)
             engine.save_to_file(
-                edi1, "{}/ColumnEditorial.mp3".format(editorial_audiobooks_path))
+                edi1, "{}/Chapter0/page0.mp3".format(editorial_audiobooks_path))
             engine.runAndWait()
             print("Column editorial processing done!!!")
 
@@ -127,11 +129,13 @@ class Editorial2audiobook:
             edi2 = re.sub(r"\n\b", " ", edi2)
             edi2 = re.sub(r"-\s", "", edi2)
 
+            os.makedirs("./media/audiobook_books/{}/audio/Chapter1".format(pdf_name), exist_ok=True)
+            os.makedirs("./media/audiobook_books/{}/images/Chapter1".format(pdf_name), exist_ok=True)
             cv2.imwrite(
-                '{}/UpperRightEditorial.jpeg'.format(editorial_thumbnails_path), img_edi2)
+                '{}/Chapter1/page0.jpeg'.format(editorial_thumbnails_path), img_edi2)
             cv2.waitKey(0)
             engine.save_to_file(
-                edi2, "{}/UpperRightEditorial.mp3".format(editorial_audiobooks_path))
+                edi2, "{}/Chapter1/page0.mp3".format(editorial_audiobooks_path))
             engine.runAndWait()
             print("Upper right editorial processing done!!!")
 
@@ -161,12 +165,14 @@ class Editorial2audiobook:
             edi3 = re.sub(r"\n\b", " ", edi3)
             edi3 = re.sub(r"-\s", "", edi3)
 
+            os.makedirs("./media/audiobook_books/{}/audio/Chapter2".format(pdf_name), exist_ok=True)
+            os.makedirs("./media/audiobook_books/{}/images/Chapter2".format(pdf_name), exist_ok=True)
             cv2.imwrite(
-                '{}/LowerRightEditorial.jpeg'.format(editorial_thumbnails_path), img_edi3)
+                '{}/Chapter2/page0.jpeg'.format(editorial_thumbnails_path), img_edi3)
             cv2.waitKey(0)
             # os.system('start edi3.jpeg')
             engine.save_to_file(
-                edi3, "{}/LowerRightEditorial.mp3".format(editorial_audiobooks_path))
+                edi3, "{}/Chapter2/page0.mp3".format(editorial_audiobooks_path))
             engine.runAndWait()
             print("Lower right editorial processing done!!!")
 
