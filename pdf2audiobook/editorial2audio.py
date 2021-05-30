@@ -5,9 +5,10 @@ import pyttsx3  # Default rate of reading is 200 word per minute
 import os
 import shutil
 import re
-from google_drive_downloader import GoogleDriveDownloader as Gdd
+# from google_drive_downloader import GoogleDriveDownloader as Gdd
 import threading
 import time
+
 
 class Editorial2audiobook:
     def __init__(self, mode, drive_link, file_name):
@@ -31,7 +32,7 @@ class Editorial2audiobook:
             # drive_link = input("Enter drive link for The Hindu Newspaper pdf: ").strip()
             # file_name = input("Save as (*.pdf): ").strip()
             file_id = re.split(r'/', drive_link)
-            Gdd.download_file_from_google_drive(file_id=file_id[5], dest_path='/media/Editorials/{}.pdf'.format(file_name), showsize=True)
+            # Gdd.download_file_from_google_drive(file_id=file_id[5], dest_path='/media/Editorials/{}.pdf'.format(file_name), showsize=True)
             pdf_name = file_name
             pdf_path = '/media/Editorials/{}.pdf'.format(file_name)
         elif mode == 2:
@@ -44,27 +45,34 @@ class Editorial2audiobook:
 
         # Convert PDF pages to images
         # next line should be commented on MacOS and uncommented on Windows
-        pages = convert_from_path(poppler_path="C:/poppler-21.02.0/Library/bin", pdf_path=pdf_path, dpi=300, fmt="jpeg", grayscale=True, size=(2921, 3449))
+        # pages = convert_from_path(poppler_path="C:/poppler-21.02.0/Library/bin", pdf_path=pdf_path, dpi=300, fmt="jpeg", grayscale=True, size=(2921, 3449))
+            pages = convert_from_path(pdf_path)
         # next line should be commented on Windows and uncommented on MacOS
         # pages = convert_from_path(pdf_path)
 
         # Create imgs folder at specified path if it doesn't exist. If it exists, then delete it and create once again
         try:
             os.makedirs("./{}".format(path), exist_ok=True)
-            os.makedirs("/media/audiobook_editorials/{}/audio".format(pdf_name), exist_ok=True)
-            os.makedirs("/media/audiobook_editorials/{}/images".format(pdf_name), exist_ok=True)
+            os.makedirs(
+                "/media/audiobook_editorials/{}/audio".format(pdf_name), exist_ok=True)
+            os.makedirs(
+                "/media/audiobook_editorials/{}/images".format(pdf_name), exist_ok=True)
         except FileExistsError:
             # shutil.rmtree(path, ignore_errors=True)
             os.makedirs("./{}".format(path), exist_ok=True)
-            os.makedirs("/media/audiobook_editorials/{}/audio".format(pdf_name), exist_ok=True)
-            os.makedirs("/media/audiobook_editorials/{}/images".format(pdf_name), exist_ok=True)
+            os.makedirs(
+                "/media/audiobook_editorials/{}/audio".format(pdf_name), exist_ok=True)
+            os.makedirs(
+                "/media/audiobook_editorials/{}/images".format(pdf_name), exist_ok=True)
 
         # Text is used to find whether the page has editorials or not
         # text = str()
         print("Number of pages: ", len(pages))
 
-        editorial_audiobooks_path = "/media/audiobook_editorials/{}/audio".format(pdf_name)
-        editorial_thumbnails_path = "/media/audiobook_editorials/{}/images".format(pdf_name)
+        editorial_audiobooks_path = "/media/audiobook_editorials/{}/audio".format(
+            pdf_name)
+        editorial_thumbnails_path = "/media/audiobook_editorials/{}/images".format(
+            pdf_name)
 
         # Saves the images in jpeg format
         for i in range(len(pages)):
@@ -75,8 +83,10 @@ class Editorial2audiobook:
             # Processes left column editorial
             print("Column editorial processing started")
             img_edi1 = img[361: 3393, 81: 777]
-            img_edi1 = cv2.resize(src=img_edi1, dsize=(400, 2000), fx=10, fy=0.01)
-            ret, img_threshold = cv2.threshold(img_edi1, 170, 255, cv2.THRESH_BINARY)
+            img_edi1 = cv2.resize(
+                src=img_edi1, dsize=(400, 2000), fx=10, fy=0.01)
+            ret, img_threshold = cv2.threshold(
+                img_edi1, 170, 255, cv2.THRESH_BINARY)
             edi1 = pytesseract.image_to_string(img_threshold)
 
             # Removes unwanted newline characters so that speech quality can be improved
@@ -84,12 +94,13 @@ class Editorial2audiobook:
             edi1 = re.sub(r"\n\b", " ", edi1)
             edi1 = re.sub(r"-\s", "", edi1)
 
-            cv2.imwrite('{}/Column Editorial.jpeg'.format(editorial_thumbnails_path), img_edi1)
+            cv2.imwrite(
+                '{}/Column Editorial.jpeg'.format(editorial_thumbnails_path), img_edi1)
             cv2.waitKey(0)
-            engine.save_to_file(edi1, "{}/Column Editorial.mp3".format(editorial_audiobooks_path))
+            engine.save_to_file(
+                edi1, "{}/Column Editorial.mp3".format(editorial_audiobooks_path))
             engine.runAndWait()
             print("Column editorial processing done!!!")
-
 
         def upper_right_editorial(img_edi2):
             # Finds the end of picture in upper right editorial and covers it with black colour so that if any text is there, it will not interfere with actual editorial.
@@ -102,7 +113,8 @@ class Editorial2audiobook:
                 specs_list = specs.split()
                 if num != 0:
                     if len(specs_list) == 12:
-                        x, y, w, h = int(specs_list[6]), int(specs_list[7]), int(specs_list[8]), int(specs_list[9])
+                        x, y, w, h = int(specs_list[6]), int(specs_list[7]), int(
+                            specs_list[8]), int(specs_list[9])
                         if h <= 20:
                             tops.append(y)
                         cv2.rectangle(img, (x, y), (x + w, y + h), (0, 0, 255))
@@ -116,12 +128,13 @@ class Editorial2audiobook:
             edi2 = re.sub(r"\n\b", " ", edi2)
             edi2 = re.sub(r"-\s", "", edi2)
 
-            cv2.imwrite('{}/Upper Right Editorial.jpeg'.format(editorial_thumbnails_path), img_edi2)
+            cv2.imwrite(
+                '{}/Upper Right Editorial.jpeg'.format(editorial_thumbnails_path), img_edi2)
             cv2.waitKey(0)
-            engine.save_to_file(edi2, "{}/Upper Right Editorial.mp3".format(editorial_audiobooks_path))
+            engine.save_to_file(
+                edi2, "{}/Upper Right Editorial.mp3".format(editorial_audiobooks_path))
             engine.runAndWait()
             print("Upper right editorial processing done!!!")
-
 
         def lower_right_editorial(img_edi3):
             # Finds the end of picture in lower right editorial and covers it with black colour
@@ -134,7 +147,8 @@ class Editorial2audiobook:
                 specs_list = specs.split()
                 if num != 0:
                     if len(specs_list) == 12:
-                        x, y, w, h = int(specs_list[6]), int(specs_list[7]), int(specs_list[8]), int(specs_list[9])
+                        x, y, w, h = int(specs_list[6]), int(specs_list[7]), int(
+                            specs_list[8]), int(specs_list[9])
                         if h <= 20:
                             tops.append(y)
                         cv2.rectangle(img, (x, y), (x + w, y + h), (0, 0, 255))
@@ -148,13 +162,14 @@ class Editorial2audiobook:
             edi3 = re.sub(r"\n\b", " ", edi3)
             edi3 = re.sub(r"-\s", "", edi3)
 
-            cv2.imwrite('{}/Lower Right Editorial.jpeg'.format(editorial_thumbnails_path), img_edi3)
+            cv2.imwrite(
+                '{}/Lower Right Editorial.jpeg'.format(editorial_thumbnails_path), img_edi3)
             cv2.waitKey(0)
             # os.system('start edi3.jpeg')
-            engine.save_to_file(edi3, "{}/Lower Right Editorial.mp3".format(editorial_audiobooks_path))
+            engine.save_to_file(
+                edi3, "{}/Lower Right Editorial.mp3".format(editorial_audiobooks_path))
             engine.runAndWait()
             print("Lower right editorial processing done!!!")
-
 
         # Reads upper left corner of each page.
         title = str()
@@ -165,7 +180,8 @@ class Editorial2audiobook:
 
             # Converts image to grey scale and then thresholds it.
             img_grey = cv2.cvtColor(img_title, cv2.COLOR_BGR2GRAY)
-            ret, img_threshold = cv2.threshold(img_grey, 170, 255, cv2.THRESH_BINARY)
+            ret, img_threshold = cv2.threshold(
+                img_grey, 170, 255, cv2.THRESH_BINARY)
 
             # Converts title image to string
             text = pytesseract.image_to_string(img_threshold)
@@ -179,7 +195,8 @@ class Editorial2audiobook:
 
                 flag = 1
                 # Processing left column editorial using thread to achieve speed
-                t1 = threading.Thread(target=left_column_editorial, args=(img,))
+                t1 = threading.Thread(
+                    target=left_column_editorial, args=(img,))
                 t1.start()
 
                 # Finds the point from where the lower right editorial starts
@@ -193,11 +210,13 @@ class Editorial2audiobook:
                     if num != 0:
                         if len(specs_list) == 12:
                             word = specs_list[11]
-                            x, y, w, h = int(specs_list[6]), int(specs_list[7]), int(specs_list[8]), int(specs_list[9])
+                            x, y, w, h = int(specs_list[6]), int(specs_list[7]), int(
+                                specs_list[8]), int(specs_list[9])
                             if h >= 40:
                                 tops.append(y)
                 cut_at = min(tops) + 800
-                img_edi2 = cv2.resize(src=img[200:cut_at - 2, 800:2850], dsize=(1500, 1000), fx=0.4, fy=0.1)
+                img_edi2 = cv2.resize(
+                    src=img[200:cut_at - 2, 800:2850], dsize=(1500, 1000), fx=0.4, fy=0.1)
 
                 # Finds the point where the lower right editorial finishes
                 img_temp = img[cut_at + 500:, 800:2850]
@@ -210,20 +229,24 @@ class Editorial2audiobook:
                         b = int(specs_list[6])
                         if len(specs_list) == 12:
                             word = specs_list[11]
-                            x, y, w, h = int(specs_list[6]), int(specs_list[7]), int(specs_list[8]), int(specs_list[9])
+                            x, y, w, h = int(specs_list[6]), int(specs_list[7]), int(
+                                specs_list[8]), int(specs_list[9])
                             if b - a >= 1000:
                                 top = y
                                 break
                     a = b
                 cut_at_lower = y + cut_at - 40
-                img_edi3 = cv2.resize(src=img[cut_at:cut_at_lower, 800:2850], dsize=(1500, 1000), fx=0.4, fy=0.1)
+                img_edi3 = cv2.resize(
+                    src=img[cut_at:cut_at_lower, 800:2850], dsize=(1500, 1000), fx=0.4, fy=0.1)
 
-                t2 = threading.Thread(target=upper_right_editorial, args=(img_edi2,))
+                t2 = threading.Thread(
+                    target=upper_right_editorial, args=(img_edi2,))
                 t2.start()
 
                 time.sleep(5)
 
-                t3 = threading.Thread(target=lower_right_editorial, args=(img_edi3,))
+                t3 = threading.Thread(
+                    target=lower_right_editorial, args=(img_edi3,))
                 t3.start()
 
                 t1.join()
