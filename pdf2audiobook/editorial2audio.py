@@ -32,21 +32,20 @@ class Editorial2audiobook:
             # drive_link = input("Enter drive link for The Hindu Newspaper pdf: ").strip()
             # file_name = input("Save as (*.pdf): ").strip()
             file_id = re.split(r'/', drive_link)
-            # Gdd.download_file_from_google_drive(file_id=file_id[5], dest_path='/media/Editorials/{}.pdf'.format(file_name), showsize=True)
+            # Gdd.download_file_from_google_drive(file_id=file_id[5], dest_path='./media/books/{}.pdf'.format(file_name), showsize=True)
             pdf_name = file_name
-            pdf_path = '/media/Editorials/{}.pdf'.format(file_name)
+            pdf_path = './media/books/{}.pdf'.format(file_name)
         elif mode == 2:
             # pdf_name = str(input("Enter name of PDF: "))
             pdf_name = file_name
-            pdf_path = "/media/Editorials/{}.pdf".format(pdf_name)
+            pdf_path = "./media/books/{}.pdf".format(pdf_name)
         else:
             print("Invalid input!!!")
             exit(0)
 
         # Convert PDF pages to images
         # next line should be commented on MacOS and uncommented on Windows
-        # pages = convert_from_path(poppler_path="C:/poppler-21.02.0/Library/bin", pdf_path=pdf_path, dpi=300, fmt="jpeg", grayscale=True, size=(2921, 3449))
-            pages = convert_from_path(pdf_path)
+        pages = convert_from_path(poppler_path="C:/poppler-21.02.0/Library/bin", pdf_path=pdf_path, dpi=300, fmt="jpeg", grayscale=True, size=(2921, 3449))
         # next line should be commented on Windows and uncommented on MacOS
         # pages = convert_from_path(pdf_path)
 
@@ -54,24 +53,24 @@ class Editorial2audiobook:
         try:
             os.makedirs("./{}".format(path), exist_ok=True)
             os.makedirs(
-                "/media/audiobook_editorials/{}/audio".format(pdf_name), exist_ok=True)
+                "./media/audiobook_books/{}/audio".format(pdf_name), exist_ok=True)
             os.makedirs(
-                "/media/audiobook_editorials/{}/images".format(pdf_name), exist_ok=True)
+                "./media/audiobook_books/{}/images".format(pdf_name), exist_ok=True)
         except FileExistsError:
             # shutil.rmtree(path, ignore_errors=True)
             os.makedirs("./{}".format(path), exist_ok=True)
             os.makedirs(
-                "/media/audiobook_editorials/{}/audio".format(pdf_name), exist_ok=True)
+                "./media/audiobook_books/{}/audio".format(pdf_name), exist_ok=True)
             os.makedirs(
-                "/media/audiobook_editorials/{}/images".format(pdf_name), exist_ok=True)
+                "./media/audiobook_books/{}/images".format(pdf_name), exist_ok=True)
 
         # Text is used to find whether the page has editorials or not
         # text = str()
         print("Number of pages: ", len(pages))
 
-        editorial_audiobooks_path = "/media/audiobook_editorials/{}/audio".format(
+        editorial_audiobooks_path = "./media/audiobook_books/{}/audio".format(
             pdf_name)
-        editorial_thumbnails_path = "/media/audiobook_editorials/{}/images".format(
+        editorial_thumbnails_path = "./media/audiobook_books/{}/images".format(
             pdf_name)
 
         # Saves the images in jpeg format
