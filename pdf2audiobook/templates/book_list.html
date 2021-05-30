@@ -71,6 +71,55 @@
 							</td>
 						</tr>
 					{% endfor %}
+					<hr>
+					{% for editorial in editorial %}
+						<tr>
+							<td class="px-6 py-4 whitespace-nowrap">
+								<div class="flex items-center">
+									<div class="ml-4">
+										<div class="text-sm font-medium text-gray-900">
+											{{ editorial.title }}
+										</div>
+									</div>
+								</div>
+							</td>
+							<td class="px-6 py-4 whitespace-nowrap">
+								<div class="flex items-center">
+									<div class="ml-4">
+										<a href="/media/{{ book.file }}" target="_blank" class="text-sm font-medium text-gray-900">
+											<button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+												PDF
+											</button>
+										</a>
+									</div>
+								</div>
+							</td>
+							<td class="px-6 py-4 whitespace-nowrap">
+								<div class="flex items-center">
+									<div class="ml-4">
+										<div class="text-sm font-medium text-gray-900">
+											Feature under work
+										</div>
+									</div>
+								</div>
+							</td>
+							<td class="px-6 py-4 whitespace-nowrap">
+								<div class="flex items-center">
+									<div class="ml-4">
+										<div class="text-sm font-medium text-gray-900">
+											<form action="{% url 'book-delete' book.pk %}" method="post">
+												{% csrf_token %}
+												<button type="submit" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
+													Delete
+												</button>
+											</form>
+											
+										</div>
+									</div>
+								</div>
+							</td>
+						</tr>
+					{% endfor %}
 				</tbody>
 			</table>
 			</div>
