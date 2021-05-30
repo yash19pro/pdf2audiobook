@@ -1,12 +1,13 @@
 {% extends 'base.html' %}
 {% block content %}
-
+<div class="text-center shadow-2x" style="margin:0 auto; width:700px; border: 2px solid #000">
 {% for x in books %}
-    <div class="bg-white p-5 text-center shadow-2xl" style="background: #4b636e">
+    <div class="bg-white p-5 text-center shadow-2xl flex-col flex" style="background-color: #eee8d5;">
         <div>
             <a href="{% url 'chapter' name=bookname chapID=x %}" class="inline-block border border-white text-white rounded-full px-6 py-2 mr-4 shadow-2xl" style="background: #001f3f">Chapter {{ x }}</a>
         </div>
     </div>
 
 {% endfor %}
+</div>
 {% endblock content %}

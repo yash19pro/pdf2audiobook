@@ -2,14 +2,17 @@
 {% block content %}
 
 <h1 class="text-gray-600 body-font text-6xl">Chapter {{ chapID }}:</h1>
+<div style="display: block; margin-bottom: 185px">
 {% for x in books %}
     <div class="p-5">
         <figcaption class="text-2xl">
+
             Page {{ x }}
         </figcaption>
         <audio controls>
             <source src="/media/audiobook_books/{{ bookname }}/audio/Chapter{{ chapID }}/page{{ x }}.mp3" type="audio/mpeg">
         </audio>
     </div>
-{% endfor %} 
+{% endfor %}
+</div>
 {% endblock content %}
