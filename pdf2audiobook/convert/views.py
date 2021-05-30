@@ -15,6 +15,8 @@ import re
 # Create your views here.
 
 # home page views
+
+
 def landing_page(request):
     return render(request, 'landing_page.html')
 
@@ -65,6 +67,21 @@ def book_upload(request):
     return render(request, 'book_upload.html', {'form': form})
 
 
+def first_page(request, name):
+    folders = os.listdir(str(os.path.dirname(__file__)) +
+                         '/../media/audiobook_books/' + str(name))
+    no_of_folders = [x for x in range(len(folders))]
+    context = {'books': no_of_folders, 'bookname': name}
+    render(request, 'chapters.html', context)
+
+
+def chapter_page(request, name, chapID):
+	files = os.listdir(str(os.path.dirname(__file__)) +
+	                     '/../media/audiobook_books/{}/Chapter'.format(name) + str(chapID))
+	no_of_files = [x for x in range(len(files))]
+	context = { 'books': no_of_files, 'bookname': name, 'chapID': chapID }
+	render(request, 'chap.html', context)
+
 def book_delete(request, pk):
     if request.method == 'POST':
         book = Books.objects.get(pk=pk)
@@ -85,6 +102,7 @@ def book_list(request):
 # --------------------------
 # index: 4 : 4-7, 9-15, 17-19, 21-27
 # --------------------------
+
 
 def pager(pdfname, index_string):
     pdfpath = os.path.dirname(__file__)

@@ -18,7 +18,7 @@ from django.urls import path
 from django.conf import settings
 from django.conf.urls.static import static
 
-from convert.views import about_us, book_delete, book_list, book_upload, contact_us, how_to_use, landing_page
+from convert.views import about_us, book_delete, book_list, book_upload, contact_us, how_to_use, landing_page, first_page, chapter_page
 from player.views import audio_player
 
 urlpatterns = [
@@ -28,11 +28,13 @@ urlpatterns = [
     path('book/', book_list, name = 'book-list'),
     path('book-upload/', book_upload, name = 'book-upload'),
     path('book/<int:pk>/', book_delete, name = 'book-delete'),
+    path('book/<slug:name>/', first_page, name = 'chapterList'),
+    path('book/<slug:name>/<int:chapID>', chapter_page, name = 'chapter'),
     path('about_us/', about_us, name = 'about-us-page'),
     path('how_to_use/', how_to_use, name = 'how-to-use-page'),
     path('audio/', audio_player, name = 'audiobook-player'),
 ]
 
-if settings.DEBUG:
-	urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-	urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+# if settings.DEBUG:
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

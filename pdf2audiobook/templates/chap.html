@@ -1,0 +1,7 @@
+{% extends 'base.html' %}
+{% block content %}
+
+{% for x in no_of_folders %}
+    <div><audio src="media/audiobook_books/{{ bookname }}/Chapter{{ chapID }}/page{{x}}.mp3"></audio></div>
+{% endfor %} 
+{% endblock content %}
