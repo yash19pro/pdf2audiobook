@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% block content %}
 
-{% for x in no_of_folders %}
-    <div><a href="{% url 'chapter' {{ bookname }} x %}"></a></div>
+{% for x in books %}
+    <div><a href="{% url 'chapter' name=bookname chapID=x %}">Audiobook</a></div>
 {% endfor %}
 {% endblock content %}

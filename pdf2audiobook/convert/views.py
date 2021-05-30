@@ -68,19 +68,19 @@ def book_upload(request):
 
 
 def first_page(request, name):
-    folders = os.listdir(str(os.path.dirname(__file__)) +
-                         '/../media/audiobook_books/' + str(name))
+    pathx = os.path.abspath(str(os.path.dirname(__file__)) + '\\..\\media\\audiobook_books\\' + str(name) + "\\audio")
+    folders = os.listdir(pathx)
     no_of_folders = [x for x in range(len(folders))]
     context = {'books': no_of_folders, 'bookname': name}
-    render(request, 'chapters.html', context)
+    return render(request, 'chapters.html', context)
 
 
 def chapter_page(request, name, chapID):
-    files = os.listdir(str(os.path.dirname(__file__)) +
-                       '/../media/audiobook_books/{}/Chapter'.format(name) + str(chapID))
+    pathx = os.path.abspath(str(os.path.dirname(__file__)) + '\\..\\media\\audiobook_books\\' + str(name) + "\\audio\\Chapter" + str(chapID))
+    files = os.listdir(pathx)
     no_of_files = [x for x in range(len(files))]
     context = {'books': no_of_files, 'bookname': name, 'chapID': chapID}
-    render(request, 'chap.html', context)
+    return render(request, 'chap.html', context)
 
 
 def book_delete(request, pk):
