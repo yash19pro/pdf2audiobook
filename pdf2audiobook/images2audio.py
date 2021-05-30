@@ -41,7 +41,7 @@ class Image2audio:
         # Initializing TTS engine
         self.engine = pyttsx3.init()
         self.engine.setProperty('rate', self.speechrate)
-        self.mutex = threading.Lock()
+        # self.mutex = threading.Lock()
 
     def next_img(self, name):
         self.text
@@ -54,10 +54,10 @@ class Image2audio:
         self.text = re.sub(r"\b\n", " ", self.text)
         self.text = re.sub(r"\n\b", " ", self.text)
         self.text = re.sub(r"-\s", "", self.text)
-        print(self.text)
+        # print(self.text)
         print("Thread execution ended")
 
-    async def converter(self):
+    def converter(self):
         # global self.text
         img = cv2.imread("{}/media/audiobook_books/{}/images/{}/page{}.jpg".format(
             self.pdfpath, self.pdfname, self.chapter_name, 0))
@@ -67,7 +67,7 @@ class Image2audio:
         self.text = re.sub(r"\b\n", " ", self.text)
         self.text = re.sub(r"\n\b", " ", self.text)
         self.text = re.sub(r"-\s", "", self.text)
-        print(self.text)
+        # print(self.text)
 
         # scanning the images and extracting the self.text from the image
         for i in range(self.start, self.end+1):
@@ -77,15 +77,15 @@ class Image2audio:
                 t = threading.Thread(target=self.next_img, args=(b,))
                 print(b)
                 t.start()
-            asyncio.sleep(20)
-            self.mutex.acquire()
+
+            # self.mutex.acquire()
             self.engine.say("page " + str(i - self.start) + ' started!')
             self.engine.runAndWait()
             # self.engine.say(self.text)
             self.engine.save_to_file(self.text, "{}/media/audiobook_books/{}/audio/{}/page{}.mp3".format(
                 self.pdfpath, self.pdfname, self.chapter_name, i - self.start))
             self.engine.runAndWait()
-            self.mutex.release()
+            # self.mutex.release()
             # if self.engine._inLoop:
             #     self.engine.startLoop(False)
             #     self.engine._inLoop = False

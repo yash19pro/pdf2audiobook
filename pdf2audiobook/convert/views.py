@@ -10,12 +10,12 @@ from pdf2images import Pdf2images
 from images2audio import Image2audio
 from pdf2image import convert_from_path
 import re
-import pytesseract
-import threading
-import cv2
-import pyttsx3
-import time
-import ast
+# import pytesseract
+# import threading
+# import cv2
+# import pyttsx3
+# import time
+# import ast
 # from stat import S_IREAD
 
 # Create your views here.
