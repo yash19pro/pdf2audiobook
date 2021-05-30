@@ -5,7 +5,7 @@ import pyttsx3  # Default rate of reading is 200 word per minute
 import os
 import shutil
 import re
-from google_drive_downloader import GoogleDriveDownloader as Gdd
+# from google_drive_downloader import GoogleDriveDownloader as Gdd
 import threading
 import time
 

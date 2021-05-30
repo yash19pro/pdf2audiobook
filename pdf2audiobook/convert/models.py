@@ -16,7 +16,7 @@ class Books(models.Model):
 
 class Editorial(models.Model):
 	title = models.CharField(max_length=100)
-	file = models.FileField(upload_to='editorials/')
+	file = models.FileField(upload_to='Editorials')
 
 	def __str__(self):
 		return self.title
