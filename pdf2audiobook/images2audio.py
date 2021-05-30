@@ -7,6 +7,7 @@ import os
 import re
 import time
 import ast
+import asyncio
 
 # text = str()
 
@@ -34,11 +35,13 @@ class Image2audio:
         self.pdfpath = os.path.dirname(__file__)
         self.pdfname = name
         self.chapter_name = chapter_name
-        os.makedirs("{}/media/audiobook_books/{}/audio/{}".format(self.pdfpath, self.pdfname, self.chapter_name), exist_ok=True)
+        os.makedirs("{}/media/audiobook_books/{}/audio/{}".format(self.pdfpath,
+                    self.pdfname, self.chapter_name), exist_ok=True)
 
         # Initializing TTS engine
         self.engine = pyttsx3.init()
         self.engine.setProperty('rate', self.speechrate)
+        self.mutex = threading.Lock()
 
     def next_img(self, name):
         self.text
@@ -54,10 +57,10 @@ class Image2audio:
         print(self.text)
         print("Thread execution ended")
 
-    
-    def converter(self):
+    async def converter(self):
         # global self.text
-        img = cv2.imread("{}/media/audiobook_books/{}/images/{}/page{}.jpg".format(self.pdfpath, self.pdfname, self.chapter_name, 0))
+        img = cv2.imread("{}/media/audiobook_books/{}/images/{}/page{}.jpg".format(
+            self.pdfpath, self.pdfname, self.chapter_name, 0))
         # gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
         # ret, img_threshold = cv2.threshold(gray, 170, 255, cv2.THRESH_BINARY)
         self.text = pytesseract.image_to_string(img)
@@ -69,15 +72,26 @@ class Image2audio:
         # scanning the images and extracting the self.text from the image
         for i in range(self.start, self.end+1):
             if i < self.end:
-                b = "{}/media/audiobook_books/{}/images/{}/page{}.jpg".format(self.pdfpath, self.pdfname, self.chapter_name, str(i + 1 - self.start))
+                b = "{}/media/audiobook_books/{}/images/{}/page{}.jpg".format(
+                    self.pdfpath, self.pdfname, self.chapter_name, str(i + 1 - self.start))
                 t = threading.Thread(target=self.next_img, args=(b,))
                 print(b)
                 t.start()
+            asyncio.sleep(20)
+            self.mutex.acquire()
             self.engine.say("page " + str(i - self.start) + ' started!')
             self.engine.runAndWait()
             # self.engine.say(self.text)
-            self.engine.save_to_file(self.text, "{}/media/audiobook_books/{}/audio/{}/page{}.mp3".format(self.pdfpath, self.pdfname, self.chapter_name, i - self.start))
+            self.engine.save_to_file(self.text, "{}/media/audiobook_books/{}/audio/{}/page{}.mp3".format(
+                self.pdfpath, self.pdfname, self.chapter_name, i - self.start))
             self.engine.runAndWait()
+            self.mutex.release()
+            # if self.engine._inLoop:
+            #     self.engine.startLoop(False)
+            #     self.engine._inLoop = False
+
+            # self.engine.stop()
+            # time.sleep(10)
             print('page ' + str(i - self.start) + ' done')
             if i < self.end:
                 t.join()
