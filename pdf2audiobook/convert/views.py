@@ -1,6 +1,7 @@
 # Django libraries
 from django.shortcuts import render, redirect
 from django.core.files.storage import FileSystemStorage
+from django.views.static import serve
 from django.http import HttpResponse
 from .forms import BooksForm
 from .models import Books
@@ -13,6 +14,8 @@ from pdf2image import convert_from_path
 from editorial2audio import Editorial2audiobook
 import re
 import mimetypes
+from directory_downloader import DDownloader
+import asyncio
 
 # Create your views here.
 
@@ -69,13 +72,28 @@ def book_upload(request):
 	return render(request, 'book_upload.html', {'form': form})
 
 
+# async def foo(name):
+	# file_path = pathx = os.path.abspath(str(os.path.dirname(__file__)) + '/../media/audiobook_books/' + str(name) + '/audio')
+	# url = '127.0.0.1:8000/book/' + str(name) + '/audio'
+	# downloader = DDownloader(url, directory="/Users/yashpatel/Downloads")
+	# await downloader.download_files()
+
 def download(request, name):
-	file_path = pathx = os.path.abspath(str(os.path.dirname(__file__)) + '/../media/audiobook_books/' + str(name))
-	with open(file_path, 'rb') as pr:
-		mime_type, _ = mimetypes.guess_type(file_path)
-		res = HttpResponse(pr.read(), content_type=mime_type)
-		res['Content-Disposition'] = 'inline; filename=' + os.path.basename(file_path)
-		return res
+	file_path = pathx = os.path.abspath(str(os.path.dirname(__file__)) + '/../media/audiobook_books/' + str(name) + '/audio')
+
+
+
+	# url = '127.0.0.1:8000/book/' + str(name) + '/audio'
+	# downloader = DDownloader(url, directory="/Users/yashpatel/Downloads")
+	# await downloader.download_files()
+	# asyncio.run(foo(name))
+	# with open(file_path, 'rb') as pr:
+	# 	mime_type, _ = mimetypes.guess_type(file_path)
+	# 	res = HttpResponse(pr.read(), content_type=mime_type)
+	# 	res['Content-Disposition'] = 'inline; filename=' + os.path.basename(file_path)
+	# 	print(mime_type)
+	# 	print(res)
+	# 	return res
 
 
 def first_page(request, name):
