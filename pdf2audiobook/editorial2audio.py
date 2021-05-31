@@ -8,6 +8,7 @@ import re
 # from google_drive_downloader import GoogleDriveDownloader as Gdd
 import threading
 import time
+from zipfile import ZipFile
 
 
 class Editorial2audiobook:
@@ -262,6 +263,7 @@ class Editorial2audiobook:
         if flag == 0:
             print("There is 'NO EDITORIAL' in this Newspaper")
         shutil.rmtree(path, ignore_errors=True)
+        shutil.make_archive("./media/audiobook_books/{}".format(pdf_name), 'zip', "./media/audiobook_books/{}/audio".format(pdf_name))
 
 
 # a = Editorial2audiobook(2, "https://drive.google.com/file/d/1mbBv1BQaWGr8qp7etr85r6B7imZ6KHLD/view?usp=sharing", "TH29May")

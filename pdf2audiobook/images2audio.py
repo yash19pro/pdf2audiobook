@@ -6,6 +6,7 @@ import pyttsx3
 import os
 import re
 import time
+import shutil
 import ast
 import asyncio
 
@@ -95,6 +96,7 @@ class Image2audio:
             print('page ' + str(i - self.start) + ' done')
             if i < self.end:
                 t.join()
+        shutil.make_archive("{}/media/audiobook_books/{}".format(self.pdfpath, self.pdfname), 'zip', "{}/media/audiobook_books/{}/audio".format(self.pdfpath, self.pdfname))
 
 
 # name_of_pdf = input("Enter the name of PDF to be processed: ").strip()
