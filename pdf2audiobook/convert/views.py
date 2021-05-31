@@ -90,9 +90,9 @@ def first_page(request, name):
 
 
 def chapter_page(request, name, chapID):
-	  # if windows then this
+	# if windows then this
 	# pathx = os.path.abspath(str(os.path.dirname(__file__)) + '\\..\\media\\audiobook_books\\' + str(name) + "\\audio\\Chapter" + str(chapID))
-	  # if mac then this
+	# if mac then this
 	pathx = os.path.abspath(str(os.path.dirname(
 		__file__)) + '/../media/audiobook_books/' + str(name) + "/audio/Chapter" + str(chapID))
 	files = os.listdir(pathx)
