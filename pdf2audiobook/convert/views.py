@@ -14,8 +14,6 @@ from pdf2image import convert_from_path
 from editorial2audio import Editorial2audiobook
 import re
 import mimetypes
-from directory_downloader import DDownloader
-import asyncio
 
 # Create your views here.
 
@@ -70,13 +68,6 @@ def book_upload(request):
 
 			return redirect('book-list')
 	return render(request, 'book_upload.html', {'form': form})
-
-
-# async def foo(name):
-	# file_path = pathx = os.path.abspath(str(os.path.dirname(__file__)) + '/../media/audiobook_books/' + str(name) + '/audio')
-	# url = '127.0.0.1:8000/book/' + str(name) + '/audio'
-	# downloader = DDownloader(url, directory="/Users/yashpatel/Downloads")
-	# await downloader.download_files()
 
 def download(request, name):
 	file_path = pathx = os.path.abspath(str(os.path.dirname(__file__)) + '/../media/audiobook_books/' + str(name) + '/audio')
