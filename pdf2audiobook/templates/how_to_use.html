@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% block content %}
+{% load static %}
 <section class="yash text-gray-600 body-font" style="display: block; margin-bottom: 185px">
 	<div class="container px-5 py-24 mx-auto flex flex-wrap flex-col">
 		<div class="flex mx-auto flex-wrap mb-20">
@@ -27,7 +28,7 @@
 		</div>
 
 		<div class="flex flex-col text-center w-full step-1-details">
-			<h1 class="text-xl font-medium title-font mb-4 text-gray-900 text-3xl">Step 1</h1>
+			<img src="{% static 'bookupload.jpg' %}">
 			<p class="lg:w-2/3 mx-auto leading-relaxed text-base">Write a suitable title for your book in the title field.</p>
 			<br>
 			<p class="lg:w-2/3 mx-auto leading-relaxed text-base">Upload the pdf that you wish to 'Audify'.</p>
@@ -36,7 +37,7 @@
 		</div>
 
 		<div class="flex flex-col text-center w-full step-2-details">
-			<h1 class="text-xl font-medium title-font mb-4 text-gray-900 text-3xl">Step 2</h1>
+			<img src="{% static 'bookupload.jpg' %}">
 			<p class="lg:w-2/3 mx-auto leading-relaxed text-base">Provide an index if it is a book.</p>
 			<br>
 			<p class="lg:w-2/3 mx-auto leading-relaxed text-base">The index has a fixed pattern as follows:</p>
@@ -51,7 +52,7 @@
 		</div>
 
 		<div class="flex flex-col text-center w-full step-3-details">
-			<h1 class="text-xl font-medium title-font mb-4 text-gray-900 text-3xl">Step 3</h1>
+			<img src="{% static 'editorial.jpg' %}">
 			<p class="lg:w-2/3 mx-auto leading-relaxed text-base">If you want to process an editorial,</p>
 			<br>
 			<p class="lg:w-2/3 mx-auto leading-relaxed text-base">set title in the following pattern</p>
@@ -62,7 +63,7 @@
 		</div>
 
 		<div class="flex flex-col text-center w-full step-4-details">
-			<h1 class="text-xl font-medium title-font mb-4 text-gray-900 text-3xl">Step 4</h1>
+			<img src="{% static 'booklist.jpg' %}">
 			<p class="lg:w-2/3 mx-auto leading-relaxed text-base">To view processed documents, </p>
 			<br>
 			<p class="lg:w-2/3 mx-auto leading-relaxed text-base">click Available Books</p>
