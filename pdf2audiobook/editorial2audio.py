@@ -97,7 +97,7 @@ class Editorial2audiobook:
             os.makedirs("./media/audiobook_books/{}/audio/Chapter0".format(pdf_name), exist_ok=True)
             os.makedirs("./media/audiobook_books/{}/images/Chapter0".format(pdf_name), exist_ok=True)
             cv2.imwrite(
-                '{}/Chapter0/page0.jpeg'.format(editorial_thumbnails_path), img_edi1)
+                '{}/Chapter0/page0.jpg'.format(editorial_thumbnails_path), img_edi1)
             cv2.waitKey(0)
             engine.save_to_file(
                 edi1, "{}/Chapter0/page0.mp3".format(editorial_audiobooks_path))
@@ -133,7 +133,7 @@ class Editorial2audiobook:
             os.makedirs("./media/audiobook_books/{}/audio/Chapter1".format(pdf_name), exist_ok=True)
             os.makedirs("./media/audiobook_books/{}/images/Chapter1".format(pdf_name), exist_ok=True)
             cv2.imwrite(
-                '{}/Chapter1/page0.jpeg'.format(editorial_thumbnails_path), img_edi2)
+                '{}/Chapter1/page0.jpg'.format(editorial_thumbnails_path), img_edi2)
             cv2.waitKey(0)
             engine.save_to_file(
                 edi2, "{}/Chapter1/page0.mp3".format(editorial_audiobooks_path))
@@ -169,9 +169,9 @@ class Editorial2audiobook:
             os.makedirs("./media/audiobook_books/{}/audio/Chapter2".format(pdf_name), exist_ok=True)
             os.makedirs("./media/audiobook_books/{}/images/Chapter2".format(pdf_name), exist_ok=True)
             cv2.imwrite(
-                '{}/Chapter2/page0.jpeg'.format(editorial_thumbnails_path), img_edi3)
+                '{}/Chapter2/page0.jpg'.format(editorial_thumbnails_path), img_edi3)
             cv2.waitKey(0)
-            # os.system('start edi3.jpeg')
+            # os.system('start edi3.jpg')
             engine.save_to_file(
                 edi3, "{}/Chapter2/page0.mp3".format(editorial_audiobooks_path))
             engine.runAndWait()
@@ -264,6 +264,6 @@ class Editorial2audiobook:
             print("There is 'NO EDITORIAL' in this Newspaper")
         shutil.rmtree(path, ignore_errors=True)
         shutil.make_archive("./media/audiobook_books/{}/audio".format(pdf_name), 'zip', "./media/audiobook_books/{}/audio".format(pdf_name))
-
+        os.rename(r"./media/audiobook_books/{}/audio.zip".format(pdf_name), r"./media/audiobook_books/{0}/{0}.zip".format(pdf_name))
 
 # a = Editorial2audiobook(2, "https://drive.google.com/file/d/1mbBv1BQaWGr8qp7etr85r6B7imZ6KHLD/view?usp=sharing", "TH29May")

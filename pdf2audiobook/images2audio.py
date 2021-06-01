@@ -97,7 +97,7 @@ class Image2audio:
             if i < self.end:
                 t.join()
         shutil.make_archive("{}/media/audiobook_books/{}/audio".format(self.pdfpath, self.pdfname), 'zip', "{}/media/audiobook_books/{}/audio".format(self.pdfpath, self.pdfname))
-
+        os.rename(r"./media/audiobook_books/{}/audio.zip".format(self.pdfname), r"./media/audiobook_books/{0}/{0}.zip".format(self.pdfname))
 
 # name_of_pdf = input("Enter the name of PDF to be processed: ").strip()
 # f = open('{}/pdf2audiobook/media/audiobook_books/{}/Index.txt'.format(os.path.dirname(__file__), name_of_pdf))

@@ -71,7 +71,7 @@ def book_upload(request):
 
 
 def download(request, name):
-	pathx = os.path.abspath(str(os.path.dirname(__file__)) + '/../media/audiobook_books/' + str(name) + "/audio.zip")
+	pathx = os.path.abspath(str(os.path.dirname(__file__)) + '/../media/audiobook_books/' + str(name) + "/" + str(name)+".zip")
 	if os.path.exists(pathx):
 		with open(pathx, 'rb') as fh:
 			response = HttpResponse(fh.read(), content_type="application/zip")
