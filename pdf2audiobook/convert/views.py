@@ -2,7 +2,7 @@
 from django.shortcuts import render, redirect
 from django.core.files.storage import FileSystemStorage
 from django.views.static import serve
-from django.http import HttpResponse
+from django.http import HttpResponse, Http404
 from .forms import BooksForm
 from .models import Books
 
@@ -69,11 +69,19 @@ def book_upload(request):
 			return redirect('book-list')
 	return render(request, 'book_upload.html', {'form': form})
 
+
 def download(request, name):
-	file_path = pathx = os.path.abspath(str(os.path.dirname(__file__)) + '/../media/audiobook_books/' + str(name) + '/audio')
+	pathx = os.path.abspath(str(os.path.dirname(__file__)) + '/../media/audiobook_books/' + str(name) + "/audio.zip")
+	if os.path.exists(pathx):
+		with open(pathx, 'rb') as fh:
+			response = HttpResponse(fh.read(), content_type="application/zip")
+			response['Content-Disposition'] = 'inline; filename=' + os.path.basename(pathx)
+			return response
+	raise Http404
 
 
-
+# def download(request, name):
+# 	file_path = pathx = os.path.abspath(str(os.path.dirname(__file__)) + '/../media/audiobook_books/' + str(name) + '/audio')
 	# url = '127.0.0.1:8000/book/' + str(name) + '/audio'
 	# downloader = DDownloader(url, directory="/Users/yashpatel/Downloads")
 	# await downloader.download_files()
