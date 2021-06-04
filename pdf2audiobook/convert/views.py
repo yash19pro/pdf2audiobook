@@ -175,5 +175,5 @@ def pager(pdfname, index_string):
 		a = Image2audio(
 			pdfname, index_keys[x], 185, index_values[x][0], index_values[x][1])
 		a.converter()
-
+	os.rename("./media/audiobook_books/{}/audio.zip".format(pdfname), "./media/audiobook_books/{0}/{0}.zip".format(pdfname))
 	# Convert PDF pages to images
